@@ -60,6 +60,28 @@ Run the client:
 
 npm run dev
 
+## API Endpoints
+
+### Posts Routes
+
+| Method | Endpoint          | Description                                    |
+|--------|-----------------|-----------------------------------------------|
+| GET    | /api/posts       | Get all posts (supports pagination and search) |
+| GET    | /api/posts/:id   | Get a specific post by ID                     |
+| POST   | /api/posts       | Create a new post                             |
+| PUT    | /api/posts/:id   | Update a post                                 |
+| DELETE | /api/posts/:id   | Delete a post                                 |
+
+### Comments Routes
+
+| Method | Endpoint                 | Description                         |
+|--------|--------------------------|-------------------------------------|
+| POST   | /api/posts/:id/comments  | Add a new comment to a post         |
+| GET    | /api/posts/:id/comments  | Get all comments for a post         |
+
+
+
+
 Screenshots
 
 HomePage
