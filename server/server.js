@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+const connectDB = require('./config/db');
+
 
 // Import routes
 const postRoutes = require('./routes/posts');
@@ -25,15 +27,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Log requests in development mode
-if (process.env.NODE_ENV === 'development') {
-  app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
-    next();
-  });
-}
+// if (process.env.NODE_ENV === 'development') {
+//   app.use((req, res, next) => {
+//     console.log(`${req.method} ${req.url}`);
+//     next();
+//   });
+// }
 
 // API routes
 app.use('/api/posts', postRoutes);
@@ -41,9 +43,9 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/auth', authRoutes);
 
 // Root route
-app.get('/', (req, res) => {
-  res.send('MERN Blog API is running');
-});
+// app.get('/', (req, res) => {
+//   res.send('MERN Blog API is running');
+// });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -55,18 +57,11 @@ app.use((err, req, res, next) => {
 });
 
 // Connect to MongoDB and start server
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
+connectDB();
+
+app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
-  })
-  .catch((err) => {
-    console.error('Failed to connect to MongoDB', err);
-    process.exit(1);
-  });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {

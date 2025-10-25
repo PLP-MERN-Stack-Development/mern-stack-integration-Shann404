@@ -1,6 +1,8 @@
 // Post.js - Mongoose model for blog posts
 
 const mongoose = require('mongoose');
+const User = require('../models/User');
+
 
 const PostSchema = new mongoose.Schema(
   {

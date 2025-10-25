@@ -40,12 +40,17 @@ api.interceptors.response.use(
 
 // Post API services
 export const postService = {
-  // Get all posts with optional pagination and filters
-  getAllPosts: async (page = 1, limit = 10, category = null) => {
+ getAllPosts: async (page = 1, limit = 6, search = "", category = null) => {
     let url = `/posts?page=${page}&limit=${limit}`;
-    if (category) {
-      url += `&category=${category}`;
+
+    if (search && search.trim() !== "") {
+      url += `&search=${encodeURIComponent(search)}`;
     }
+
+    if (category) {
+      url += `&category=${encodeURIComponent(category)}`;
+    }
+
     const response = await api.get(url);
     return response.data;
   },
@@ -74,11 +79,16 @@ export const postService = {
     return response.data;
   },
 
-  // Add a comment to a post
-  addComment: async (postId, commentData) => {
-    const response = await api.post(`/posts/${postId}/comments`, commentData);
+  getComments: async (postId) => {
+    const response = await api.get(`/posts/${postId}/comments`);
     return response.data;
   },
+
+  // Add a comment to a post
+  addComment: async (postId, commentData) => {
+  const { data } = await api.post(`/posts/${postId}/comments`, commentData);
+  return data;
+},
 
   // Search posts
   searchPosts: async (query) => {
